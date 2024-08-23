@@ -20,7 +20,7 @@
   let idleAnimation = null;
   let idleAnimationFrame = 0; */
 
-  const nikoSpeed = 12;
+  const nikoSpeed = 10;
   const spriteSets = {
     idle: [[0, 0]],
 /*    alert: [[-7, -3]],
@@ -146,7 +146,7 @@
     if (!lastFrameTimestamp) {
       lastFrameTimestamp = timestamp;
     }
-    if (timestamp - lastFrameTimestamp > 100) {
+    if (timestamp - lastFrameTimestamp > 70) {
       lastFrameTimestamp = timestamp
       frame()
     }
