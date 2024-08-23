@@ -1,28 +1,28 @@
-// oneko.js: https://github.com/adryd325/oneko.js
+// oniko.js: https://github.com/adryd325/oniko.js
 
-(function oneko() {
+(function oniko() {
   const isReducedMotion =
     window.matchMedia(`(prefers-reduced-motion: reduce)`) === true ||
     window.matchMedia(`(prefers-reduced-motion: reduce)`).matches === true;
 
   if (isReducedMotion) return;
 
-  const nekoEl = document.createElement("div");
+  const nikoEl = document.createElement("div");
 
-  let nekoPosX = 32;
-  let nekoPosY = 32;
+  let nikoPosX = 32;
+  let nikoPosY = 32;
 
   let mousePosX = 0;
   let mousePosY = 0;
 
   let frameCount = 0;
   let idleTime = 0;
-  let idleAnimation = null;
-  let idleAnimationFrame = 0;
+//  let idleAnimation = null;
+//  let idleAnimationFrame = 0;
 
-  const nekoSpeed = 10;
+  const nikoSpeed = 12;
   const spriteSets = {
-    idle: [[-3, -3]],
+/*    idle: [[-3, -3]],
     alert: [[-7, -3]],
     scratchSelf: [
       [-5, 0],
@@ -49,61 +49,84 @@
     sleeping: [
       [-2, 0],
       [-2, -1],
-    ],
+    ], */
+    //Up
     N: [
-      [-1, -2],
-      [-1, -3],
+      [0, 1],
+      [-1, 1],
+      [-2, 1],
+      [-3, 1],
     ],
     NE: [
-      [0, -2],
-      [0, -3],
-    ],
-    E: [
-      [-3, 0],
-      [-3, -1],
-    ],
-    SE: [
-      [-5, -1],
-      [-5, -2],
-    ],
-    S: [
-      [-6, -3],
-      [-7, -2],
-    ],
-    SW: [
-      [-5, -3],
-      [-6, -1],
-    ],
-    W: [
-      [-4, -2],
-      [-4, -3],
+      [0, 1],
+      [-1, 1],
+      [-2, 2],
+      [-3, 2],
     ],
     NW: [
+      [0, 1],
+      [-1, 1],
+      [-2, 0],
+      [-3, 0],
+    ],
+
+    //Left
+    E: [
+      [0, 2],
+      [-1, 2],
+      [-2, 2],
+      [-3, 2],
+    ],
+
+    //Right
+    W: [
+      [0, 3],
+      [-1, 3],
+      [-2, 3],
+      [-3, 3],
+    ],
+
+    //Down
+    S: [
+      [0, 0],
       [-1, 0],
-      [-1, -1],
+      [-2, 0],
+      [-3, 0],
+    ],
+    SE: [
+      [0, 0],
+      [-1, 0],
+      [-2, 2],
+      [-3, 2],
+    ],
+    SW: [
+      [0, 0],
+      [-1, 0],
+      [-2, 3],
+      [-3, 3],
     ],
   };
 
   function init() {
-    nekoEl.id = "oneko";
-    nekoEl.ariaHidden = true;
-    nekoEl.style.width = "32px";
-    nekoEl.style.height = "32px";
-    nekoEl.style.position = "fixed";
-    nekoEl.style.pointerEvents = "none";
-    nekoEl.style.imageRendering = "pixelated";
-    nekoEl.style.left = `${nekoPosX - 16}px`;
-    nekoEl.style.top = `${nekoPosY - 16}px`;
-    nekoEl.style.zIndex = 2147483647;
+    nikoEl.id = "oniko";
+    nikoEl.ariaHidden = true;
+    nikoEl.style.width = "48px";
+    nikoEl.style.height = "64px";
+    nikoEl.style.position = "fixed";
+    nikoEl.style.pointerEvents = "none";
+    nikoEl.style.imageRendering = "pixelated";
+    nikoEl.style.left = `${nikoPosX - 16}px`;
+    nikoEl.style.top = `${nikoPosY - 16}px`;
+    nikoEl.style.zIndex = 2147483647;
 
-    let nekoFile = "./oneko.gif"
+    let nikoFile = "./oniko.png"
     const curScript = document.currentScript
     if (curScript && curScript.dataset.cat) {
-      nekoFile = curScript.dataset.cat
+      nikoFile = curScript.dataset.cat
     }
-    nekoEl.style.backgroundImage = `url(${nekoFile})`;
+    nikoEl.style.backgroundImage = `url(${nikoFile})`;
 
-    document.body.appendChild(nekoEl);
+    document.body.appendChild(nikoEl);
 
     document.addEventListener("mousemove", function (event) {
       mousePosX = event.clientX;
@@ -116,8 +139,8 @@
   let lastFrameTimestamp;
 
   function onAnimationFrame(timestamp) {
-    // Stops execution if the neko element is removed from DOM
-    if (!nekoEl.isConnected) {
+    // Stops execution if the niko element is removed from DOM
+    if (!nikoEl.isConnected) {
       return;
     }
     if (!lastFrameTimestamp) {
@@ -132,10 +155,10 @@
 
   function setSprite(name, frame) {
     const sprite = spriteSets[name][frame % spriteSets[name].length];
-    nekoEl.style.backgroundPosition = `${sprite[0] * 32}px ${sprite[1] * 32}px`;
+    nikoEl.style.backgroundPosition = `${sprite[0] * 48}px ${sprite[1] * 64}px`;
   }
 
-  function resetIdleAnimation() {
+/*  function resetIdleAnimation() {
     idleAnimation = null;
     idleAnimationFrame = 0;
   }
@@ -150,16 +173,16 @@
       idleAnimation == null
     ) {
       let avalibleIdleAnimations = ["sleeping", "scratchSelf"];
-      if (nekoPosX < 32) {
+      if (nikoPosX < 32) {
         avalibleIdleAnimations.push("scratchWallW");
       }
-      if (nekoPosY < 32) {
+      if (nikoPosY < 32) {
         avalibleIdleAnimations.push("scratchWallN");
       }
-      if (nekoPosX > window.innerWidth - 32) {
+      if (nikoPosX > window.innerWidth - 32) {
         avalibleIdleAnimations.push("scratchWallE");
       }
-      if (nekoPosY > window.innerHeight - 32) {
+      if (nikoPosY > window.innerHeight - 32) {
         avalibleIdleAnimations.push("scratchWallS");
       }
       idleAnimation =
@@ -194,15 +217,15 @@
         return;
     }
     idleAnimationFrame += 1;
-  }
+  } */
 
   function frame() {
-    frameCount += 1;
-    const diffX = nekoPosX - mousePosX;
-    const diffY = nekoPosY - mousePosY;
+    frameCount += 3;
+    const diffX = nikoPosX - mousePosX;
+    const diffY = nikoPosY - mousePosY;
     const distance = Math.sqrt(diffX ** 2 + diffY ** 2);
 
-    if (distance < nekoSpeed || distance < 48) {
+/*    if (distance < nikoSpeed || distance < 48) {
       idle();
       return;
     }
@@ -216,7 +239,7 @@
       idleTime = Math.min(idleTime, 7);
       idleTime -= 1;
       return;
-    }
+    } */
 
     let direction;
     direction = diffY / distance > 0.5 ? "N" : "";
@@ -225,14 +248,14 @@
     direction += diffX / distance < -0.5 ? "E" : "";
     setSprite(direction, frameCount);
 
-    nekoPosX -= (diffX / distance) * nekoSpeed;
-    nekoPosY -= (diffY / distance) * nekoSpeed;
+    nikoPosX -= (diffX / distance) * nikoSpeed;
+    nikoPosY -= (diffY / distance) * nikoSpeed;
 
-    nekoPosX = Math.min(Math.max(16, nekoPosX), window.innerWidth - 16);
-    nekoPosY = Math.min(Math.max(16, nekoPosY), window.innerHeight - 16);
+    nikoPosX = Math.min(Math.max(16, nikoPosX), window.innerWidth - 16);
+    nikoPosY = Math.min(Math.max(16, nikoPosY), window.innerHeight - 16);
 
-    nekoEl.style.left = `${nekoPosX - 16}px`;
-    nekoEl.style.top = `${nekoPosY - 16}px`;
+    nikoEl.style.left = `${nikoPosX - 16}px`;
+    nikoEl.style.top = `${nikoPosY - 16}px`;
   }
 
   init();
