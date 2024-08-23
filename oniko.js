@@ -1,4 +1,4 @@
-// oniko.js: https://github.com/adryd325/oniko.js
+// oniko.js: fork of https://github.com/adryd325/oneko.js
 
 (function oniko() {
   const isReducedMotion =
@@ -16,14 +16,14 @@
   let mousePosY = 0;
 
   let frameCount = 0;
-  let idleTime = 0;
-//  let idleAnimation = null;
-//  let idleAnimationFrame = 0;
+/*  let idleTime = 0;
+  let idleAnimation = null;
+  let idleAnimationFrame = 0; */
 
   const nikoSpeed = 12;
   const spriteSets = {
-/*    idle: [[-3, -3]],
-    alert: [[-7, -3]],
+    idle: [[0, 0]],
+/*    alert: [[-7, -3]],
     scratchSelf: [
       [-5, 0],
       [-6, 0],
@@ -158,12 +158,12 @@
     nikoEl.style.backgroundPosition = `${sprite[0] * 48}px ${sprite[1] * 64}px`;
   }
 
-/*  function resetIdleAnimation() {
+  function resetIdleAnimation() {
     idleAnimation = null;
     idleAnimationFrame = 0;
   }
 
-  function idle() {
+/*  function idle() {
     idleTime += 1;
 
     // every ~ 20 seconds
@@ -225,15 +225,21 @@
     const diffY = nikoPosY - mousePosY;
     const distance = Math.sqrt(diffX ** 2 + diffY ** 2);
 
-/*    if (distance < nikoSpeed || distance < 48) {
-      idle();
+    let direction;
+    direction = diffY / distance > 0.5 ? "N" : "";
+    direction += diffY / distance < -0.5 ? "S" : "";
+    direction += diffX / distance > 0.5 ? "W" : "";
+    direction += diffX / distance < -0.5 ? "E" : "";
+
+    if (distance < nikoSpeed || distance < 128) {
+      setSprite(direction, 0);
       return;
     }
 
     idleAnimation = null;
     idleAnimationFrame = 0;
 
-    if (idleTime > 1) {
+/*    if (idleTime > 1) {
       setSprite("alert", 0);
       // count down after being alerted before moving
       idleTime = Math.min(idleTime, 7);
@@ -241,11 +247,6 @@
       return;
     } */
 
-    let direction;
-    direction = diffY / distance > 0.5 ? "N" : "";
-    direction += diffY / distance < -0.5 ? "S" : "";
-    direction += diffX / distance > 0.5 ? "W" : "";
-    direction += diffX / distance < -0.5 ? "E" : "";
     setSprite(direction, frameCount);
 
     nikoPosX -= (diffX / distance) * nikoSpeed;
